@@ -19,25 +19,28 @@ def e_greedy(q_values, args={'epsilon':0.1}):
         return np.random.randint(0, len(q_values))
     return np.argmax(q_values)
 
-def get_avg_reward(bandits, time_steps, methods):
+def get_avg_reward(bandits, time_steps, iterations, methods):
     results = np.zeros((time_steps, len(methods)))
     for m, (func, args) in enumerate(methods):
 
-        reward_sum = np.zeros(len(bandits))
-        times_played = np.zeros(len(bandits))
+        for i in range(iterations):
+            reward_sum = np.zeros(len(bandits))
+            times_played = np.zeros(len(bandits))
 
-        a = random_selection(q_values(reward_sum, times_played))
-        for t in range(time_steps):
-            r = reward(bandits, a)
-            times_played[a] += 1
-            reward_sum[a] += r
-            Q = q_values(reward_sum, times_played)
+            a = random_selection(q_values(reward_sum, times_played))
+            for t in range(time_steps):
+                r = reward(bandits, a)
+                times_played[a] += 1
+                reward_sum[a] += r
+                Q = q_values(reward_sum, times_played)
 
-            # getting next action with generic action selection method
-            a = func(Q, args=args)
-            results[t, m] = np.mean(Q)
-            print '\r' + func.__name__, t,
+                # getting next action with generic action selection method
+                a = func(Q, args=args)
+                #  results[t, m] += np.mean(Q)
+                results[t, m] += r
+            print '\r' + func.__name__, i,
             sys.stdout.flush()
+        results[:, m] /= iterations
         print '\r' + func.__name__, 'done'
     return results
 
@@ -49,7 +52,7 @@ def ex1():
         [1.3, 2.0]
     ])
 
-    results = get_avg_reward(bandits, 1000, [
+    results = get_avg_reward(bandits, 1000, 2000, [
         (random_selection, {}),
         (e_greedy, {'epsilon':0}),
         (e_greedy, {'epsilon':0.1}),
