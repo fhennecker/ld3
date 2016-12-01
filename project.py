@@ -10,13 +10,36 @@ def q_values(reward_sum, times_played):
     results[times_played != 0] /= times_played[times_played != 0]
     return results
 
-def random_selection(q_values):
+def random_selection(q_values, args={}):
     return np.random.randint(0, len(q_values))
 
-def e_greedy(q_values, epsilon):
+def e_greedy(q_values, args={'epsilon':0.1}):
+    epsilon = args['epsilon']
     if np.random.rand() < epsilon:
         return np.random.randint(0, len(q_values))
     return np.argmax(q_values)
+
+def get_avg_reward(bandits, time_steps, methods):
+    results = np.zeros((time_steps, len(methods)))
+    for m, (func, args) in enumerate(methods):
+
+        reward_sum = np.zeros(len(bandits))
+        times_played = np.zeros(len(bandits))
+
+        a = random_selection(q_values(reward_sum, times_played))
+        for t in range(time_steps):
+            r = reward(bandits, a)
+            times_played[a] += 1
+            reward_sum[a] += r
+            Q = q_values(reward_sum, times_played)
+
+            # getting next action with generic action selection method
+            a = func(Q, args=args)
+            results[t, m] = np.mean(Q)
+            print '\r' + func.__name__, t,
+            sys.stdout.flush()
+        print '\r' + func.__name__, 'done'
+    return results
 
 def ex1():
     bandits = np.array([
@@ -26,25 +49,15 @@ def ex1():
         [1.3, 2.0]
     ])
 
-    reward_sum = np.zeros(len(bandits))
-    times_played = np.zeros(len(bandits))
-
-    time_steps = 1000
-    results = np.zeros(time_steps)
-
-    a = random_selection(q_values(reward_sum, times_played))
-    for t in range(time_steps):
-        r = reward(bandits, a)
-        times_played[a] += 1
-        reward_sum[a] += r
-        Q = q_values(reward_sum, times_played)
-        a = random_selection(Q)
-        results[t] = np.mean(Q)
-
-        print '\r', t,
-        sys.stdout.flush()
+    results = get_avg_reward(bandits, 1000, [
+        (random_selection, {}),
+        (e_greedy, {'epsilon':0}),
+        (e_greedy, {'epsilon':0.1}),
+        (e_greedy, {'epsilon':0.2}),
+    ])
     
     plt.plot(results)
+    plt.legend(['Random', '$\epsilon=0$', '$\epsilon=0.1$', '$\epsilon=0.2$'])
     plt.show()
 
 if __name__ == "__main__":
