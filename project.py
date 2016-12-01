@@ -36,7 +36,6 @@ def get_avg_reward(bandits, time_steps, iterations, methods):
 
                 # getting next action with generic action selection method
                 a = func(Q, args=args)
-                #  results[t, m] += np.mean(Q)
                 results[t, m] += r
             print '\r' + func.__name__, i,
             sys.stdout.flush()
