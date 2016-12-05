@@ -13,14 +13,21 @@ def q_values(reward_sum, times_played):
 def random_selection(q_values, args={}):
     return np.random.randint(0, len(q_values))
 
-def e_greedy(q_values, args={'epsilon':0.1}):
+def e_greedy(q_values, args={'epsilon':0.1, 't':None}):
     epsilon = args['epsilon']
+    try: epsilon = 1/np.sqrt(args['t'])
+    except: pass
+
     if np.random.rand() < epsilon:
         return np.random.randint(0, len(q_values))
     return np.argmax(q_values)
 
-def softmax(q_values, args={'t':0.1}):
-    distribution = np.exp(q_values/args['t'])/np.sum(np.exp(q_values/args['t']))
+def softmax(q_values, args={'tau':0.1, 't':None}):
+    tau = args['tau']
+    try: tau = 4. * 1.*(1000.-args['t']) / 1000.
+    except: pass
+
+    distribution = np.exp(q_values/tau) / np.sum(np.exp(q_values/tau))
     return np.random.choice(np.arange(len(q_values)), p=distribution)
 
 def get_avg_reward(bandits, time_steps, iterations, methods):
@@ -28,6 +35,9 @@ def get_avg_reward(bandits, time_steps, iterations, methods):
     for m, (func, args) in enumerate(methods):
 
         for i in range(iterations):
+            if 't' in args:
+                args = {'epsilon':0, 'tau':0, 't':i}
+
             reward_sum = np.zeros(len(bandits))
             times_played = np.zeros(len(bandits))
 
@@ -62,11 +72,15 @@ def run(exercise):
         (e_greedy, {'epsilon':0}),
         (e_greedy, {'epsilon':0.1}),
         (e_greedy, {'epsilon':0.2}),
-        (softmax, {'t':0.1}),
-        (softmax, {'t':1}),
+        (softmax, {'tau':0.1}),
+        (softmax, {'tau':1}),
     ]
     if exercise == 3:
-        pass
+        algos += [
+            (e_greedy, {'t':None}),
+            (softmax, {'t':None}),
+        ]
+
 
     results = get_avg_reward(bandits, 500, 1000, algos)
     
@@ -77,6 +91,4 @@ def run(exercise):
     plt.show()
 
 if __name__ == "__main__":
-    run(2)
-
-        
+    run(3)
