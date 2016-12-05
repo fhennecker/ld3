@@ -19,6 +19,10 @@ def e_greedy(q_values, args={'epsilon':0.1}):
         return np.random.randint(0, len(q_values))
     return np.argmax(q_values)
 
+def softmax(q_values, args={'t':0.1}):
+    distribution = np.exp(q_values/args['t'])/np.sum(np.exp(q_values/args['t']))
+    return np.random.choice(np.arange(len(q_values)), p=distribution)
+
 def get_avg_reward(bandits, time_steps, iterations, methods):
     results = np.zeros((time_steps, len(methods)))
     for m, (func, args) in enumerate(methods):
@@ -43,26 +47,36 @@ def get_avg_reward(bandits, time_steps, iterations, methods):
         print '\r' + func.__name__, 'done'
     return results
 
-def ex1():
+def run(exercise):
     bandits = np.array([
         [2.3, 0.9],
         [2.1, 0.6],
         [1.5, 0.4],
         [1.3, 2.0]
     ])
+    if exercise == 2 : bandits[:,1] *= 2
+    print bandits
 
-    results = get_avg_reward(bandits, 1000, 2000, [
+    algos = [
         (random_selection, {}),
         (e_greedy, {'epsilon':0}),
         (e_greedy, {'epsilon':0.1}),
         (e_greedy, {'epsilon':0.2}),
-    ])
+        (softmax, {'t':0.1}),
+        (softmax, {'t':1}),
+    ]
+    if exercise == 3:
+        pass
+
+    results = get_avg_reward(bandits, 500, 1000, algos)
     
     plt.plot(results)
-    plt.legend(['Random', '$\epsilon=0$', '$\epsilon=0.1$', '$\epsilon=0.2$'])
+    plt.legend(['Random', 
+        '$\epsilon=0$', '$\epsilon=0.1$', '$\epsilon=0.2$',
+        '$\tau=0.1$', '$\tau=1$'])
     plt.show()
 
 if __name__ == "__main__":
-    ex1()
+    run(2)
 
         
