@@ -1,12 +1,16 @@
 import numpy as np
 
 def reward(grid, a, b):
-    return np.random.randn(grid[b,a,0], grid[b,a,1])
+    return grid[b,a,0] + np.random.randn() * grid[b,a,1]
 
-def boltzmann(q_values, tau):
+def boltzmann_choice(q_values, tau, player):
+    n_actions = q_values.shape[0]
     q_values = q_values.flatten()
-    distribution = np.exp(q_values/tau)/np.sum(np.exp(q_values/tau))
-    return np.random.choice(range(q_values.size), p=distribution)
+    distrib = np.exp(q_values/tau)/np.sum(np.exp(q_values/tau))
+    if player == 'row':
+        return np.random.choice(range(q_values.size), p=distrib) / n_actions
+    return np.random.choice(range(q_values.size), p=distrib) % n_actions
+
 
 def q_values(total_rewards, total_plays):
     results = np.copy(total_rewards)
