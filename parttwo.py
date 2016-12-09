@@ -4,13 +4,19 @@ import matplotlib.pyplot as plt
 def reward(grid, a, b):
     return grid[b,a,0] + np.random.randn() * grid[b,a,1]
 
-def boltzmann_choice(q_values, tau, player):
-    n_actions = q_values.shape[0]
-    q_values = q_values.flatten()
-    distrib = np.exp(q_values/tau)/np.sum(np.exp(q_values/tau))
-    if player == 'row':
-        return np.random.choice(range(q_values.size), p=distrib) / n_actions
-    return np.random.choice(range(q_values.size), p=distrib) % n_actions
+def boltzmann_choice(total_rewards, total_plays, tau, player):
+    if player not in ['row', 'col']: raise ValueError('Incorrect player type')
+
+    Q = q_values(total_rewards, total_plays)
+    P = np.ones(len(Q[0])) * 1./len(Q[0])
+    if np.sum(total_plays) != 0:
+        P = np.sum(total_plays, 0 if player == 'row' else 1) / np.sum(total_plays),
+    if player == 'row': P = np.reshape(P, (1,-1))
+    else:               P = np.reshape(P, (-1,1))
+    EV = np.sum(Q * P, 1 if player == 'row' else 0)
+
+    distribution = np.exp(EV/tau)/np.sum(np.exp(EV/tau))
+    return np.random.choice(range(EV.size), p=distribution)
 
 
 def q_values(total_rewards, total_plays):
@@ -33,10 +39,8 @@ def run(sigmas, tau=0.1):
     alpha = 0.1
 
     for t in range(5000):
-        row_choice = boltzmann_choice(
-                q_values(total_rewards, total_plays), tau, 'row')
-        col_choice = boltzmann_choice(
-                q_values(total_rewards, total_plays), tau, 'col')
+        row_choice = boltzmann_choice(total_rewards, total_plays, tau, 'row')
+        col_choice = boltzmann_choice(total_rewards, total_plays, tau, 'col')
         r = reward(grid, col_choice, row_choice)
         total_plays[row_choice, col_choice] += 1
         total_rewards[row_choice, col_choice] += r
@@ -51,4 +55,6 @@ def run(sigmas, tau=0.1):
     plt.show()
 
 if __name__ == '__main__':
-    run([0.2, 0.2, 0.2])
+    run([0.2, 0.2, 0.2], tau=0.1)
+    #  run([0.1, 0.1, 4], tau=0.1)
+    #  run([0.1, 4, 0.1], tau=0.1)
