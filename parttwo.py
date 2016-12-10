@@ -29,7 +29,7 @@ def q_values(total_rewards, total_plays):
     results[total_plays != 0] /= total_plays[total_plays != 0]
     return results
 
-def run(sigmas, tau=0.1):
+def run(sigmas, func, tau=0.1):
     sigma, sigma0, sigma1 = np.square(sigmas)
     grid = np.array([
         [[11, sigma0], [-30, sigma], [0, sigma]],
@@ -39,13 +39,15 @@ def run(sigmas, tau=0.1):
 
     total_rewards = np.zeros((len(grid), len(grid)))
     total_plays = np.zeros((len(grid), len(grid)))
-    rewards = np.zeros(5000)
-    avg_rewards = np.zeros(5000)
-    alpha = 0.1
+    n_steps = 5000
+    rewards = np.zeros(n_steps)
+    avg_rewards = np.zeros(n_steps)
+    alpha = 0.02
+    probas = np.zeros((n_steps,3))
 
-    for t in range(5000):
-        row_choice = boltzmann_choice(total_rewards, total_plays, tau, 'row')
-        col_choice = boltzmann_choice(total_rewards, total_plays, tau, 'col')
+    for t in range(n_steps):
+        row_choice = func(total_rewards, total_plays, tau, 'row')
+        col_choice = func(total_rewards, total_plays, tau, 'col')
         r = reward(grid, col_choice, row_choice)
         total_plays[row_choice, col_choice] += 1
         total_rewards[row_choice, col_choice] += r
@@ -55,11 +57,19 @@ def run(sigmas, tau=0.1):
         else:
             avg_rewards[t] = (1-alpha) * avg_rewards[t-1] + alpha * r
     
-    plt.plot(rewards)
-    plt.plot(avg_rewards)
-    plt.show()
+    return avg_rewards
 
 if __name__ == '__main__':
-    run([0.2, 0.2, 0.2], tau=0.1)
-    #  run([0.1, 0.1, 4], tau=0.1)
-    #  run([0.1, 4, 0.1], tau=0.1)
+    params = [[0.2, 0.2, 0.2], [0.1, 0.1, 0.4], [0.1, 4, 0.1]]
+    taus = [1, 0.1]
+    funcs = [boltzmann_choice, optimistic_boltzmann]
+    for param in params:
+        results, legends = [], []
+        for func in funcs:
+            for tau in taus:
+                results.append(run(param, func, tau=tau))
+                legends.append(func.__name__+' '+str(tau))
+        for res in results:
+            plt.plot(res)
+        plt.legend(legends, loc=4)
+        plt.show()
