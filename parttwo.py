@@ -18,6 +18,11 @@ def boltzmann_choice(total_rewards, total_plays, tau, player):
     distribution = np.exp(EV/tau)/np.sum(np.exp(EV/tau))
     return np.random.choice(range(EV.size), p=distribution)
 
+def optimistic_boltzmann(total_rewards, total_plays, tau, player):
+    Q = q_values(total_rewards, total_plays)
+    maxQ = np.max(Q, 1 if player == 'row' else 0)
+    distribution = np.exp(maxQ/tau)/np.sum(np.exp(maxQ/tau))
+    return np.random.choice(range(maxQ.size), p=distribution)
 
 def q_values(total_rewards, total_plays):
     results = np.copy(total_rewards)
