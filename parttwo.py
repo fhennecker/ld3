@@ -78,5 +78,5 @@ if __name__ == '__main__':
         plt.ylim([-10, 12]);
         plt.ylabel('Smoothed reward'); plt.xlabel('Time')
         plt.grid(True)
-        plt.savefig('fig%d.pdf'%index)
+        plt.savefig('fig/ex2-%d.pdf'%index)
         plt.show()
