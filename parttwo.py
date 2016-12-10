@@ -62,8 +62,7 @@ def run(sigmas, func, tau=0.1):
 if __name__ == '__main__':
     def beautify(funcname):
         return funcname.replace('_', ' ').title()
-    params = [[0.2, 0.2, 0.2]]#, [0.1, 0.1, 0.4], [0.1, 4, 0.1]]
-    #  params = [[0.2, 0.2, 0.2], [0.1, 0.1, 0.4], [0.1, 4, 0.1]]
+    params = [[0.2, 0.2, 0.2], [0.1, 0.1, 0.4], [0.1, 4, 0.1]]
     taus = [1, 0.1]
     funcs = [boltzmann, optimistic_boltzmann]
     for index, param in enumerate(params):
