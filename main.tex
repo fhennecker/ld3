@@ -72,4 +72,85 @@ This is likely caused by the fact that there is a lot of noise in the rewards
 and that the discrete distribution regulating the choice of action is fairly
 homogeneous. 
 
+\begin{figure}[H]
+	\centering
+	\subfloat[][Arm 1]{\includegraphics[width=.49\textwidth]{./fig/ex1-1-q0.pdf}}
+	\subfloat[][Arm 2]{\includegraphics[width=.49\textwidth]{./fig/ex1-1-q1.pdf}}
+	\\
+	\subfloat[][Arm 3]{\includegraphics[width=.49\textwidth]{./fig/ex1-1-q2.pdf}}
+	\subfloat[][Arm 4]{\includegraphics[width=.49\textwidth]{./fig/ex1-1-q3.pdf}}
+	\caption{Evolution of $Q_{ai}$ for each arm}
+	\label{ex11q}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\subfloat[][Random]{\includegraphics[width=.16\textwidth]{./fig/ex1-1-a0.pdf}}
+	\subfloat[][$\epsilon$-greedy 0]{\includegraphics[width=.16\textwidth]{./fig/ex1-1-a1.pdf}}
+	\subfloat[][$\epsilon$-greedy 0.1]{\includegraphics[width=.16\textwidth]{./fig/ex1-1-a2.pdf}}
+	\subfloat[][$\epsilon$-greedy 0.2]{\includegraphics[width=.16\textwidth]{./fig/ex1-1-a3.pdf}}
+	\subfloat[][Softmax 1]{\includegraphics[width=.16\textwidth]{./fig/ex1-1-a4.pdf}}
+	\subfloat[][Softmax 0.1]{\includegraphics[width=.16\textwidth]{./fig/ex1-1-a5.pdf}}
+	\caption{Actions taken by each algorithm}
+	\label{ex11a}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./fig/ex1-2.pdf}
+	\caption{Evolution of the average reward over 3000 runs during training}
+	\label{ex12perf}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\subfloat[][Arm 1]{\includegraphics[width=.49\textwidth]{./fig/ex1-2-q0.pdf}}
+	\subfloat[][Arm 2]{\includegraphics[width=.49\textwidth]{./fig/ex1-2-q1.pdf}}
+	\\
+	\subfloat[][Arm 3]{\includegraphics[width=.49\textwidth]{./fig/ex1-2-q2.pdf}}
+	\subfloat[][Arm 4]{\includegraphics[width=.49\textwidth]{./fig/ex1-2-q3.pdf}}
+	\caption{Evolution of $Q_{ai}$ for each arm}
+	\label{ex12q}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\subfloat[][Random]{\includegraphics[width=.16\textwidth]{./fig/ex1-2-a0.pdf}}
+	\subfloat[][$\epsilon$-greedy 0]{\includegraphics[width=.16\textwidth]{./fig/ex1-2-a1.pdf}}
+	\subfloat[][$\epsilon$-greedy 0.1]{\includegraphics[width=.16\textwidth]{./fig/ex1-2-a2.pdf}}
+	\subfloat[][$\epsilon$-greedy 0.2]{\includegraphics[width=.16\textwidth]{./fig/ex1-2-a3.pdf}}
+	\subfloat[][Softmax 1]{\includegraphics[width=.16\textwidth]{./fig/ex1-2-a4.pdf}}
+	\subfloat[][Softmax 0.1]{\includegraphics[width=.16\textwidth]{./fig/ex1-2-a5.pdf}}
+	\caption{Actions taken by each algorithm}
+	\label{ex12a}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./fig/ex1-3.pdf}
+	\caption{Evolution of the average reward over 3000 runs during training}
+	\label{ex13perf}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\subfloat[][Arm 1]{\includegraphics[width=.49\textwidth]{./fig/ex1-3-q0.pdf}}
+	\subfloat[][Arm 2]{\includegraphics[width=.49\textwidth]{./fig/ex1-3-q1.pdf}}
+	\\
+	\subfloat[][Arm 3]{\includegraphics[width=.49\textwidth]{./fig/ex1-3-q2.pdf}}
+	\subfloat[][Arm 4]{\includegraphics[width=.49\textwidth]{./fig/ex1-3-q3.pdf}}
+	\caption{Evolution of $Q_{ai}$ for each arm}
+	\label{ex13q}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\subfloat[][Random]{\includegraphics[width=.16\textwidth]{./fig/ex1-3-a0.pdf}}
+	\subfloat[][$\epsilon$-greedy 0]{\includegraphics[width=.16\textwidth]{./fig/ex1-3-a1.pdf}}
+	\subfloat[][$\epsilon$-greedy 0.1]{\includegraphics[width=.16\textwidth]{./fig/ex1-3-a2.pdf}}
+	\subfloat[][$\epsilon$-greedy 0.2]{\includegraphics[width=.16\textwidth]{./fig/ex1-3-a3.pdf}}
+	\\
+	\subfloat[][Softmax 1]{\includegraphics[width=.16\textwidth]{./fig/ex1-3-a4.pdf}}
+	\subfloat[][Softmax 0.1]{\includegraphics[width=.16\textwidth]{./fig/ex1-3-a5.pdf}}
+	\subfloat[][$\epsilon(t)$]{\includegraphics[width=.16\textwidth]{./fig/ex1-3-a6.pdf}}
+	\subfloat[][$\tau(t)$]{\includegraphics[width=.16\textwidth]{./fig/ex1-3-a7.pdf}}
+	\caption{Actions taken by each algorithm}
+	\label{ex13a}
+\end{figure}
 \end{document}
