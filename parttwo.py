@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 def reward(grid, a, b):
     return grid[b,a,0] + np.random.randn() * grid[b,a,1]
 
-def boltzmann_choice(total_rewards, total_plays, tau, player):
+def boltzmann(total_rewards, total_plays, tau, player):
     if player not in ['row', 'col']: raise ValueError('Incorrect player type')
 
     Q = q_values(total_rewards, total_plays)
@@ -60,16 +60,24 @@ def run(sigmas, func, tau=0.1):
     return avg_rewards
 
 if __name__ == '__main__':
-    params = [[0.2, 0.2, 0.2], [0.1, 0.1, 0.4], [0.1, 4, 0.1]]
+    def beautify(funcname):
+        return funcname.replace('_', ' ').title()
+    params = [[0.2, 0.2, 0.2]]#, [0.1, 0.1, 0.4], [0.1, 4, 0.1]]
+    #  params = [[0.2, 0.2, 0.2], [0.1, 0.1, 0.4], [0.1, 4, 0.1]]
     taus = [1, 0.1]
-    funcs = [boltzmann_choice, optimistic_boltzmann]
-    for param in params:
+    funcs = [boltzmann, optimistic_boltzmann]
+    for index, param in enumerate(params):
         results, legends = [], []
+        plt.figure(index)
         for func in funcs:
             for tau in taus:
                 results.append(run(param, func, tau=tau))
-                legends.append(func.__name__+' '+str(tau))
-        for res in results:
-            plt.plot(res)
+                legends.append(beautify(func.__name__)+' '+str(tau))
+        for res, color in zip(results, ['magenta', 'red', 'cyan', 'blue']):
+            plt.plot(res, color=color)
         plt.legend(legends, loc=4)
+        plt.ylim([-10, 12]);
+        plt.ylabel('Smoothed reward'); plt.xlabel('Time')
+        plt.grid(True)
+        plt.savefig('fig%d.pdf'%index)
         plt.show()
