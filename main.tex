@@ -149,6 +149,15 @@ The average reward climbs above 2.2 before 200 iterations in the first case,
 and it takes a lot more time in the second case. However, after 1000 iterations,
 the difference is small; and it is for all the algorithms.\\
 
+The fact that this problem is harder to learn is visible on figure \ref{ex12q}
+too : all algorithms take more time to converge to the true values. The last
+(and worst) arm is notably different. All algorithms (except the random one)
+underestimate fairly wildly its value.\\
+
+The graphs of figure \ref{ex12a}, although they are a bit more homogeneous for
+$\epsilon$-greedy 0.1 and 0.2, are barely different than the ones of figure
+\ref{ex11a}.
+
 \begin{figure}[H]
 	\centering
 	\subfloat[][Arm 1]{\includegraphics[width=.49\textwidth]{./fig/ex1-2-q0.pdf}}
@@ -172,6 +181,26 @@ the difference is small; and it is for all the algorithms.\\
 \end{figure}
 
 \subsection{Exercise 3}
+Let us now compare $\epsilon$-greedy and Softmax with varying time parameters
+on the problem posed in the first exercise. We will implement and compare:
+\begin{itemize}
+	\item $\epsilon$-greedy with $\epsilon = 1/\sqrt{t}$
+	\item Softmax with $\tau = 4*\frac{1000-t}{1000}$
+\end{itemize}
+
+\paragraph{$\epsilon$-greedy} performs better than its fixed $\epsilon$ variants
+on every aspect : it converges quicker, and reaches a better average reward
+at every iteration. However, on figure \ref{ex13q}a, we see that even if 
+it gets close to the actual $Q^*_{ai}$ faster than most of the other algorithms,
+it levels off before the actual value and then converges very slowly even though
+this action gets selected very often (see figure \ref{ex13a}g).
+
+\paragraph{Softmax} is a very interesting one. During the first few hundred
+iterations, it is left exploring all actions. But once the temperature goes
+down, its average reward climbs as it starts choosing the best arm more often
+and it manages to shoot past all other algorithms at the end, being the only
+one reaching the mean value of the best arm.
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{./fig/ex1-3.pdf}
@@ -188,6 +217,16 @@ the difference is small; and it is for all the algorithms.\\
 	\caption{Evolution of $Q_{ai}$ for each arm}
 	\label{ex13q}
 \end{figure}
+
+Once again, the graphs in figure \ref{ex13a} do not show the full picture.
+The graph for Softmax with a varying $\tau$ doesn't show that once it has 
+learned a good estimation of all $Q^*_{ai}$ and the temperature is decreased,
+it will always choose the optimal arm.\\
+
+Looking at figure \ref{ex13q}, it is clear that Softmax with a varying $\tau$
+is the quickest (except for the random policy) to learn about the Q values.
+We could decrease the temperature much earlier to reach optimal rewards.
+
 \begin{figure}[H]
 	\centering
 	\subfloat[][Random]{\includegraphics[width=.16\textwidth]{./fig/ex1-3-a0.pdf}}
