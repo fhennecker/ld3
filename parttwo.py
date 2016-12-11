@@ -62,8 +62,8 @@ def run(sigmas, func, tau=0.1):
 if __name__ == '__main__':
     def beautify(funcname):
         return funcname.replace('_', ' ').title()
-    params = [[0.2, 0.2, 0.2], [0.1, 0.1, 0.4], [0.1, 4, 0.1]]
-    taus = [1, 0.1]
+    params = [[0.2, 0.2, 0.2], [0.1, 4, 0.1], [0.1, 0.1, 4]]
+    taus = [1]
     funcs = [boltzmann, optimistic_boltzmann]
     for index, param in enumerate(params):
         results, legends = [], []
@@ -72,7 +72,7 @@ if __name__ == '__main__':
             for tau in taus:
                 results.append(run(param, func, tau=tau))
                 legends.append(beautify(func.__name__)+' '+str(tau))
-        for res, color in zip(results, ['magenta', 'red', 'cyan', 'blue']):
+        for res, color in zip(results, ['magenta', 'cyan']):
             plt.plot(res, color=color)
         plt.legend(legends, loc=4)
         plt.ylim([-10, 12]);
