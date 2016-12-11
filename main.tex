@@ -57,7 +57,7 @@ their reward after playing for many iterations.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{./fig/ex1-1.pdf}
-	\caption{Evolution of the average reward over 3000 runs during training}
+	\caption{Evolution of the average reward over 10000 runs during training}
 	\label{ex11perf}
 \end{figure}
 As we can see, only two algorithms managed to converge to the best arm : 
@@ -71,7 +71,8 @@ all of the actions.\\
 Softmax outperforms the random selection policy but does not do very well. 
 This is likely caused by the fact that there is a lot of noise in the rewards
 and that the discrete distribution regulating the choice of action is fairly
-homogeneous. 
+homogeneous. This hypothesis can be confirmed by looking at figures 
+\ref{ex11q} and \ref{ex11a}.
 
 \begin{figure}[H]
 	\centering
@@ -83,6 +84,35 @@ homogeneous.
 	\caption{Evolution of $Q_{ai}$ for each arm}
 	\label{ex11q}
 \end{figure}
+
+The first thing to note on figure \ref{ex11q} is that the random selection 
+policy estimates $Q^*_{ai}*$ quite precisely very fast for each arm, which is
+normal. One could say that random exploration is very good, but it only is at
+the very start and for small problems with small action-state spaces.\\
+
+Another interesting trend is that the best arm gets learnt much faster than the
+worst one. This is due to the fact that the learning algorithms should pick it
+more often, therefore allowing us to understand quicker its reward
+distribution.\\
+
+As for the speed at which each algorithm converges, it makes sense to see that
+the higher $\epsilon$ is, the quicker it will converge because it follows a
+more random behaviour. Softmax 1 has an interesting behaviour. It learns
+very quickly about the quality of the good arms but much slower about the bad
+ones.\\
+
+Softmax 0.1 seems to have trouble learning this problem. In fact, it doesn't
+have enough exploration power and will behave just like $\epsilon$-greedy 0.
+Both will pick an action at the start and will stick with it until then end.
+The graphs of figure \ref{ex11q} do not convey the idea that both algorithms
+will actually learn the value of one arm very quickly, but leave the others at
+0; this is due to the fact that each graph shows an average of many runs.\\
+
+We have the same issue on figure \ref{ex11a} : it looks like all actions are
+being taken roughly the same amount of time during a run, but both algorithms
+actually only pick one (or almost one for Softmax 0.1) action for the whole run
+and what we see is the fact that the action picked is picked at random at the 
+start.
 
 \begin{figure}[H]
 	\centering
@@ -96,13 +126,29 @@ homogeneous.
 	\label{ex11a}
 \end{figure}
 
+Concerning $\epsilon$-greedy 0.1 and 0.2, we clearly see that both algorithms
+have learnt that the first arm is the best one. Also, with a higher $\epsilon$, 
+the non-optimal actions get chosen a bit more. Softmax 1 seems to have learnt
+that the best arm is the first one too but has a too high temperature to
+always choose the best arm. 
+
 \subsection{Exercise 2}
+If we do the exact same exercise but double the standard deviation of the reward
+for each arm, we see on figure \ref{ex12perf} that it is a harder problem to 
+learn.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{./fig/ex1-2.pdf}
-	\caption{Evolution of the average reward over 3000 runs during training}
+	\caption{Evolution of the average reward over 10000 runs during training}
 	\label{ex12perf}
 \end{figure}
+When we compare this graph to the one shown in figure \ref{ex11perf}, we
+notice that the variance of each learning curve is higher, but most importantly,
+we see that the two algorithms that manage to train correctly learn slower. 
+The average reward climbs above 2.2 before 200 iterations in the first case,
+and it takes a lot more time in the second case. However, after 1000 iterations,
+the difference is small; and it is for all the algorithms.\\
+
 \begin{figure}[H]
 	\centering
 	\subfloat[][Arm 1]{\includegraphics[width=.49\textwidth]{./fig/ex1-2-q0.pdf}}
@@ -129,7 +175,7 @@ homogeneous.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{./fig/ex1-3.pdf}
-	\caption{Evolution of the average reward over 3000 runs during training}
+	\caption{Evolution of the average reward over 10000 runs during training}
 	\label{ex13perf}
 \end{figure}
 \begin{figure}[H]
