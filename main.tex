@@ -261,6 +261,7 @@ joint actions. The game is the stochastic climbing game :
 \label{banditparams}
 \end{table}
 
+\subsection{Plotting}
 We use the standard method described in \cite{claus} which consists of doing
 Boltzmann exploration using expected values considering the probabilities that
 the other player will play each action.\\
@@ -268,7 +269,7 @@ the other player will play each action.\\
 The heuristic chosen is optimistic Boltzmann. All graphs are smoothed with
 an exponential average :
 $$ \widehat{x}_{t+1} = (1-\alpha)\widehat{x}_t + \alpha * x $$
-with $\alpha = 0.02$. \\
+with $\alpha = 0.02$. The temperature chosen for both algorithms is $\tau=1$\\
 
 As we can see on figure \ref{ex31perf}, the first type converges
 to a reward of 7. This is the expected equilibrium as shown in figures 3, 4 and
@@ -276,9 +277,10 @@ to a reward of 7. This is the expected equilibrium as shown in figures 3, 4 and
 the 'fear' of getting a large negative reward by being optimistic and 
 converges to 11.\\
 
-When the highest reward is made more uncertain, the optimistic reward seems
-to converge to about 7 as well. However, if we make the reward for 
-<$a_2$, $b_2$> more uncertain, both algorithms will end up choosing this action
+When the highest reward is made more uncertain (figure \ref{ex32perf}), 
+the optimistic reward seems to converge to about 7 as well. However, if we 
+make the reward for <$a_2$, $b_2$> more uncertain (figure \ref{ex33perf}), 
+both algorithms will end up choosing this action
 and will receive a reward with very high variance (as can be seen from the
 much less stable plot)\\
 
@@ -304,6 +306,27 @@ much less stable plot)\\
 		$\sigma_1 = 4$ and  $\sigma_0 = \sigma = 0.1$}
 	\label{ex33perf}
 \end{figure}
+
+\subsection{Discussion}
+
+\paragraph{How will the learning process change if we make the agents 
+independent learners?}
+In this case, both agents only learn about their actions (so they will only have
+three Q values instead of nine). As explained in \cite{claus}, but in the case of 
+a simpler game, cooperation still emerges even though both agents have less
+information. The only difference is that the joint action learners converge
+slightly quicker to cooperation.
+
+\paragraph{How will the learning process change if we make the agents always
+select the action that according to them will yield the highest reward
+(assuming the other agent plays the best response?)}
+This would be equivalent to removing entirely the exploration steps. As soon as
+the reward is positive, the agent will keep playing that action.
+let us assume that $a$ is the greedy player and $b$ is playing the best
+response. If $a$ chooses action 0, and $b$ chooses action 0, or$a$
+chooses action 1 and $b$ chooses action 1; or if $a$ chooses action 2 and $b$ 
+chooses action 1 or 2; $a$ will receive a positive reward every time and so 
+will keep playing that action since all the other actions are valued at 0.
 
 \begin{thebibliography}{1}
 	\bibitem{claus} C. Claus and C. Boutilier. The dynamics of 
