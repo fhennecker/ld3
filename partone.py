@@ -37,14 +37,14 @@ def get_avg_reward(bandits, time_steps, iterations, methods):
     for m, (func, args) in enumerate(methods):
 
         for i in range(iterations):
-            if 't' in args:
-                args = {'epsilon':0, 'tau':0, 't':i}
 
             reward_sum = np.zeros(len(bandits))
             times_played = np.zeros(len(bandits))
 
             a = random_selection(q_values(reward_sum, times_played))
             for t in range(time_steps):
+                if 't' in args:
+                    args = {'epsilon':0, 'tau':0, 't':t}
                 r = reward(bandits, a)
                 times_played[a] += 1
                 reward_sum[a] += r
@@ -91,7 +91,7 @@ def run(exercise):
         ]
 
 
-    results, Qai, times_selected = get_avg_reward(bandits, 1000, 3000, algos)
+    results, Qai, times_selected = get_avg_reward(bandits, 1000, 10000, algos)
     
 
     plt.figure(figsize=(10, 6))
