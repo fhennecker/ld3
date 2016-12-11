@@ -15,6 +15,7 @@
 \usepackage{float}
 \usepackage{multirow}
 \usepackage{subfig}
+\usepackage{minted}
 \usepackage[table]{xcolor}
 \title{
     Assignment 3 : Multi-Armed Bandits\\
@@ -63,7 +64,7 @@ As we can see, only two algorithms managed to converge to the best arm :
 $\epsilon$-greedy 0.1 and 0.2. Let us first explain the behaviour of 
 $\epsilon$-greedy 0. It selects its first action at random, but for all the
 following iterations, it will choose it again as its Q-value will be non-zero
-and there is no room to explore. If all the arms had negative $Q*_{ai}$, 
+and there is no room to explore. If all the arms had negative $Q^*_{ai}$, 
 $\epsilon$-greedy would however pick the less negative one after it has explored
 all of the actions.\\
 
@@ -95,6 +96,7 @@ homogeneous.
 	\label{ex11a}
 \end{figure}
 
+\subsection{Exercise 2}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{./fig/ex1-2.pdf}
@@ -123,6 +125,7 @@ homogeneous.
 	\label{ex12a}
 \end{figure}
 
+\subsection{Exercise 3}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{./fig/ex1-3.pdf}
@@ -153,4 +156,34 @@ homogeneous.
 	\caption{Actions taken by each algorithm}
 	\label{ex13a}
 \end{figure}
+
+\section{Stochastic Reward Game}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./fig/ex2-0.pdf}
+	\caption{Evolution of the average reward during training with 
+		$\sigma_0 = \sigma_1 = \sigma = 0.2$}
+	\label{ex31perf}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./fig/ex2-1.pdf}
+	\caption{Evolution of the average reward during training with
+		$\sigma_0 = 4$ and $\sigma_1 = \sigma = 0.1$}
+	\label{ex32perf}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./fig/ex2-2.pdf}
+	\caption{Evolution of the average reward during training with
+		$\sigma_1 = 4$ and  $\sigma_0 = \sigma = 0.1$}
+	\label{ex33perf}
+\end{figure}
+
+\appendix
+\section{N-Armed Bandit code}
+\inputminted{python}{partone.py}
+
+\section{Stochastic Reward Game code}
+\inputminted{python}{parttwo.py}
 \end{document}

@@ -13,8 +13,8 @@ mrproper: clean
 	rm -f main.pdf
 
 %.pdf: %.tex ${FIGURES}
-	pdflatex $<
-	pdflatex $<
+	pdflatex --shell-escape $< 
+	pdflatex --shell-escape $< 
 
 fsa/%.eps: fsa/%.dot
 	dot -Tps $< -o $@
